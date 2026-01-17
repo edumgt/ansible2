@@ -1,0 +1,44 @@
+---
+- name: Install prerequisites
+  ansible.builtin.package:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+
+- name: Install Docker on Debian/Ubuntu
+  when: ansible_facts.os_family == 'Debian'
+  block:
+    - name: Add Docker GPG key
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/{{ ansible_facts.distribution | lower }}/gpg
+        state: present
+
+    - name: Add Docker repo
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ 'amd64' if ansible_facts.architecture in ['x86_64','amd64'] else ansible_facts.architecture }}] https://download.docker.com/linux/{{ ansible_facts.distribution | lower }} {{ ansible_facts.distribution_release }} stable"
+        state: present
+
+    - name: Install Docker packages
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        update_cache: true
+        state: present
+
+- name: Ensure docker service enabled and started
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add user to docker group (best-effort)
+  ansible.builtin.user:
+    name: "{{ ansible_user | default('ubuntu') }}"
+    groups: docker
+    append: true
+  ignore_errors: true

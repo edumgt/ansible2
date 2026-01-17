@@ -1,0 +1,25 @@
+services:
+  app:
+    image: traefik/whoami:latest
+    container_name: sample-app
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    container_name: sample-nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+
+  db:
+    image: postgres:16-alpine
+    container_name: sample-db
+    environment:
+      POSTGRES_PASSWORD: example
+
+  redis:
+    image: redis:7-alpine
+    container_name: sample-redis

@@ -1,0 +1,6 @@
+---
+- name: Install Docker Engine
+  hosts: app_hosts
+  become: true
+  roles:
+    - docker_engine

@@ -1,0 +1,7 @@
+---
+- name: Rolling deploy compose stack (one by one)
+  hosts: app_hosts
+  serial: 1
+  become: true
+  roles:
+    - compose_stack

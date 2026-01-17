@@ -1,0 +1,16 @@
+---
+plugin: amazon.aws.aws_ec2
+regions:
+  - ap-northeast-2
+filters:
+  tag:AnsibleManaged: "true"
+keyed_groups:
+  - key: tags.Environment
+    prefix: env
+  - key: tags.Role
+    prefix: role
+hostnames:
+  - private-ip-address
+compose:
+  ansible_host: private_ip_address
+  ansible_user: tags.AnsibleUser | default('ubuntu')

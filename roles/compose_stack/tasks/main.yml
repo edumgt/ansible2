@@ -1,0 +1,27 @@
+---
+- name: Ensure compose root exists
+  ansible.builtin.file:
+    path: "{{ compose_project_root }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy stack files
+  ansible.builtin.copy:
+    src: "{{ stack_src_dir }}/"
+    dest: "{{ stack_dest_dir }}/"
+    mode: '0644'
+
+- name: Compose up
+  community.docker.docker_compose_v2:
+    project_src: "{{ stack_dest_dir }}"
+    state: present
+
+- name: Wait for healthcheck
+  ansible.builtin.uri:
+    url: "{{ healthcheck_url }}"
+    return_content: false
+    status_code: 200
+  register: hc
+  retries: "{{ healthcheck_retries }}"
+  delay: "{{ healthcheck_delay }}"
+  until: hc.status == 200

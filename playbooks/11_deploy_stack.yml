@@ -1,0 +1,6 @@
+---
+- name: Deploy compose stack
+  hosts: app_hosts
+  become: true
+  roles:
+    - compose_stack

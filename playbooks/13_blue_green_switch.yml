@@ -1,0 +1,6 @@
+---
+- name: Blue-Green deploy on single host
+  hosts: app_hosts
+  become: true
+  roles:
+    - compose_blue_green

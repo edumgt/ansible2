@@ -1,0 +1,10 @@
+---
+- name: Cleanup AWS resources created by this repo
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    aws_region: "{{ aws_region | default('ap-northeast-2') }}"
+    environment: "{{ environment | default('dev') }}"
+  roles:
+    - aws_ssm_cleanup

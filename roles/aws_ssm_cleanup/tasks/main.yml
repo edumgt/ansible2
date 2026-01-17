@@ -1,0 +1,30 @@
+---
+- name: Find instances by tag
+  amazon.aws.ec2_instance_info:
+    region: "{{ aws_region }}"
+    filters:
+      "tag:Project": "ansible-aws-docker-ops"
+      "tag:Environment": "{{ environment }}"
+  register: inst
+
+- name: Terminate instances
+  when: inst.instances | length > 0
+  amazon.aws.ec2_instance:
+    region: "{{ aws_region }}"
+    instance_ids: "{{ inst.instances | map(attribute='instance_id') | list }}"
+    state: terminated
+    wait: true
+
+- name: Find VPC by name tag (best-effort)
+  amazon.aws.ec2_vpc_net_info:
+    region: "{{ aws_region }}"
+    filters:
+      "tag:Project": "ansible-aws-docker-ops"
+      "tag:Environment": "{{ environment }}"
+  register: vpcs
+
+- name: Best-effort message
+  ansible.builtin.debug:
+    msg:
+      - "Instances terminated. VPC cleanup is best-effort; depending on dependencies, you may need console cleanup."
+      - "Matched VPCs: {{ vpcs.vpcs | map(attribute='vpc_id') | list }}"
