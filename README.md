@@ -5,7 +5,8 @@
 ![alt text](image-1.png)
 ### WSL 연결 또는 Linux 설치 없을 경우 배포판을 사용하여 설치 후 연동
 ### 목록 중 연결닫기 하면 다시 윈도우 파워 셸
-
+![alt text](image-2.png)
+## 윈도우즈에서 현재의 프로젝트 폴더를 WSL 의 Linux 폴더로 복제
 
 
 
