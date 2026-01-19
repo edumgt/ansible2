@@ -1,57 +1,37 @@
 # Ansible
 
-## 사전에 WSL(WSL2) 설치/관리 + 여러 리눅스 배포판 설치 + Docker Desktop(WSL2) 공유 정리
-
-> 기준: Windows 10/11에서 **WSL2**를 사용하는 일반적인 케이스  
-> PowerShell(관리자 권한)에서 실행해야 하는 명령은 ✅로 표시했습니다.
-
----
-
-## 0) 빠른 결론 (Docker Desktop + WSL2)
+## Docker Desktop + WSL2
 - **Docker Desktop + WSL2 백엔드 + WSL Integration 사용**이면  
   → Windows와 WSL Linux는 **같은 Docker 엔진을 공유**하므로 **이미지/컨테이너가 공유**됩니다.
 - WSL Ubuntu 안에 **docker-ce를 별도로 설치**하고 그 안에서 `dockerd`를 따로 띄우면  
   → Docker Desktop 엔진과 **분리**되어 **공유되지 않습니다.**
 
 ---
-
-## 1) WSL/WSL2 설치 (가장 쉬운 방법)
-### 1-1) WSL 설치/기본 세팅 (권장)
-✅ **PowerShell(관리자)**:
-```powershell
-wsl --install
-```
-
-- 기본으로 Ubuntu가 함께 설치되는 경우가 많습니다.
-- 설치 후 재부팅이 필요할 수 있어요.
-
-### 1-2) WSL 상태/버전 확인
+### WSL 상태/버전 확인
 ```powershell
 wsl --status
 ```
 
-### 1-3) WSL 업데이트 (커널 업데이트)
+### WSL 업데이트 (커널 업데이트)
 ✅ PowerShell(관리자):
 ```powershell
 wsl --update
 ```
 
-### 1-4) 기본 WSL 버전을 WSL2로 지정
+### 기본 WSL 버전을 WSL2로 지정
 ```powershell
 wsl --set-default-version 2
 ```
-
 ---
-
-## 2) 설치 가능한 리눅스 목록 조회 & 여러 배포판 설치
-### 2-1) 설치 가능한 배포판(온라인) 목록 보기
+## 설치 가능한 리눅스 목록 조회 & 여러 배포판 설치
+### 설치 가능한 배포판(온라인) 목록 보기
 ```powershell
 wsl --list --online
 # 또는 축약
 wsl -l -o
 ```
 
-### 2-2) 원하는 배포판 설치
+### 원하는 배포판 설치
 예: Ubuntu / Debian / Kali / openSUSE 등
 ```powershell
 wsl --install -d Ubuntu
@@ -63,15 +43,15 @@ wsl --install -d kali-linux
 
 ---
 
-## 3) 현재 설치된 WSL 배포판 목록 보기 (설치 목록)
-### 3-1) 설치된 배포판 목록
+## 현재 설치된 WSL 배포판 목록 보기 (설치 목록)
+### 설치된 배포판 목록
 ```powershell
 wsl --list
 # 축약
 wsl -l
 ```
 
-### 3-2) 설치된 배포판 + WSL 버전(1/2)까지 보기 (추천)
+### 설치된 배포판 + WSL 버전(1/2)까지 보기 (추천)
 ```powershell
 wsl --list --verbose
 # 축약
@@ -80,25 +60,25 @@ wsl -l -v
 
 ---
 
-## 4) 실행/접속/기본 배포판 관리
-### 4-1) 특정 배포판 실행(접속)
+## 실행/접속/기본 배포판 관리
+### 특정 배포판 실행(접속)
 ```powershell
 wsl -d Ubuntu
 wsl -d Debian
 ```
 
-### 4-2) 특정 배포판에서 특정 명령만 실행
+### 특정 배포판에서 특정 명령만 실행
 ```powershell
 wsl -d Ubuntu -- uname -a
 wsl -d Debian -- cat /etc/os-release
 ```
 
-### 4-3) 기본 배포판 지정
+### 기본 배포판 지정
 ```powershell
 wsl --set-default Ubuntu
 ```
 
-### 4-4) 실행 중인 배포판 종료
+### 실행 중인 배포판 종료
 - 전체 WSL 종료:
 ```powershell
 wsl --shutdown
@@ -116,13 +96,8 @@ wsl --terminate Ubuntu
 ```powershell
 wsl --set-version Ubuntu 2
 ```
-
-### 5-2) 특정 배포판을 WSL1로 변경(특수 목적)
-```powershell
-wsl --set-version Ubuntu 1
-```
-
 ---
+
 
 ## 6) 배포판(리눅스) 삭제/백업/복원
 ### 6-1) 배포판 완전 삭제(주의!)
@@ -143,28 +118,8 @@ wsl --import UbuntuRestored C:\WSL\UbuntuRestored C:\backup\ubuntu.tar --version
 
 ---
 
-## 7) Windows ↔ WSL 파일 경로/접근
-### 7-1) WSL에서 Windows 드라이브 접근
-- C드라이브:
-```bash
-cd /mnt/c
-```
 
-### 7-2) Windows 탐색기에서 WSL 파일 보기
-- 탐색기 주소창에 입력:
-```text
-\\wsl$\Ubuntu
-```
-
-### 7-3) 현재 WSL 디렉터리를 Windows 탐색기로 열기
-WSL(리눅스)에서:
-```bash
-explorer.exe .
-```
-
----
-
-## 8) 네트워크/포트 관련 빠른 팁
+## 네트워크/포트 관련 빠른 팁
 - WSL2는 내부적으로 가상 네트워크를 쓰므로 IP가 달라질 수 있어요.
 - 보통은 `localhost` 포트 포워딩이 동작하지만, 방화벽/보안 설정에 따라 예외가 있을 수 있습니다.
 - WSL에서 현재 IP 확인:
@@ -174,26 +129,12 @@ ip addr
 
 ---
 
-## 9) 자주 쓰는 “운영” 명령 모음 (치트시트)
-### 9-1) 현재 설치/실행 현황 빠르게 보기
-```powershell
-wsl -l -v
-wsl --status
-```
-
-### 9-2) 특정 배포판에서 패키지 업데이트 (Ubuntu/Debian)
+### 특정 배포판에서 패키지 업데이트 (Ubuntu/Debian)
 WSL(리눅스) 안에서:
 ```bash
 sudo apt update
 sudo apt upgrade -y
 ```
-
-### 9-3) openSUSE 계열 예시
-```bash
-sudo zypper refresh
-sudo zypper update -y
-```
-
 ---
 
 ## 10) Docker Desktop + WSL2 “공유 엔진” 확인
@@ -432,7 +373,7 @@ grep -q '^result_format' ansible.cfg || printf '\nresult_format = yaml\n' >> ans
 
 ---
 
-## Ansible 학습용 단계별 플레이북
+## Ansible 학습용 단계별 플레이북 - 폴더 확인 - playbooks/learning
 
 아래 학습용 플레이북들은 **로컬 환경**에서 실행 가능한 예제입니다.
 
@@ -490,8 +431,23 @@ ansible-playbook -i inventories/local/hosts.ini playbooks/03_role_web.yml
 ansible-playbook -i inventories/docker/hosts.ini playbooks/10_docker_install.yml
 ```
 
-### AWS VPC + EC2 만들기
+## AWS VPC + EC2 만들기
+### 리눅스에서 aws 실행 여부 확인
+```
+kimdy@DESKTOP-CLQV18N:~/ansible-aws-docker-ops-enterprise$ aws
 
+aws: [ERROR]: the following arguments are required: command
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+```
+### 위의 내용 확인 위한 AWS 의 IAM, key 생성 사전에 작업하고 할것.
+---
+---
 ```bash
 # AWS 자격 증명은 환경변수 또는 ~/.aws/credentials(프로파일)로 설정
 ansible-playbook playbooks/20_aws_create_vpc.yml -e aws_region=ap-northeast-2
@@ -683,7 +639,5 @@ docker exec -it lab-crowdsec cscli alerts list
 
 > CrowdSec는 시나리오/컬렉션/파서 구성에 따라 탐지 결과가 달라집니다.  
 > 이 랩은 “로그를 읽고 상태/알림을 확인하는 흐름”을 익히는 데 초점을 둡니다.
-
-
 
 
