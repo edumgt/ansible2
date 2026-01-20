@@ -37,6 +37,8 @@
         content: |
           <h1>Hello Ansible</h1>
           <p>host={{ inventory_hostname }}</p>
+          <p style='background-color:#222'>TETST</p>
+
 
     - name: Enable and start nginx
       ansible.builtin.service:

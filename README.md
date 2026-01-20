@@ -413,8 +413,12 @@ ansible-playbook playbooks/00_ping.yml
 ansible-playbook -i inventories/local/hosts.ini playbooks/02_nginx.yml
 ```
 
-권한 문제가 있으면 아래처럼 실행하세요.
-
+### nginx 사전 테스트
+```
+ansible-playbook -i inventories/local/hosts.ini playbooks/check_nginx.yml -b -K
+```
+---
+### 권한 문제가 있으면 아래처럼 실행하세요.
 ```bash
 ansible-playbook -i inventories/local/hosts.ini playbooks/02_nginx.yml --become --ask-become-pass
 ```
