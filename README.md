@@ -485,6 +485,23 @@ Requirement already satisfied: pip in /home/ubuntu/ansible-aws-docker-ops-enterp
 ```
 ![alt text](image-6.png)
 
+### python 라이브러리 필요시
+```
+이 에러는 AWS 모듈(amazon.aws.ec2_vpc_net)이 컨트롤 노드(네 WSL 로컬) 에서 실행되는데, Ansible이 사용 중인 파이썬이
+
+/home/ubuntu/ansible-aws-docker-ops-enterprise/.venv/bin/python3.12
+
+이거라서, 그 venv 안에 boto3 / botocore가 없어서 터진 겁니다.
+
+해결은 2가지 중 하나예요. (난이도 낮은 것부터)
+
+해결 1) “현재 Ansible이 쓰는 venv”에 boto3/botocore 설치 (가장 빠름)
+
+에러에 찍힌 인터프리터 경로가 곧 “설치해야 할 곳”입니다.
+
+/home/ubuntu/ansible-aws-docker-ops-enterprise/.venv/bin/python -m pip install -U pip
+/home/ubuntu/ansible-aws-docker-ops-enterprise/.venv/bin/python -m pip install -U boto3 botocore
+```
 
 > 비용이 발생할 수 있으니, 실습 후 `playbooks/23_aws_cleanup.yml`로 정리하세요.
 
