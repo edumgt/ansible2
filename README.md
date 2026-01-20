@@ -483,6 +483,8 @@ ansible-playbook playbooks/20_aws_create_vpc.yml -i inventories/aws/hosts.ini -e
 Requirement already satisfied: pip in /home/ubuntu/ansible-aws-docker-ops-enterprise/.venv/lib/python3.12/site-packages (25.3)
 (.venv) ubuntu@DESKTOP-8FSFFJK:~/ansible2$ python3 -m pip install -U boto3 botocore
 ```
+![alt text](image-6.png)
+
 
 > 비용이 발생할 수 있으니, 실습 후 `playbooks/23_aws_cleanup.yml`로 정리하세요.
 
