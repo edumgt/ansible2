@@ -434,6 +434,12 @@ ansible-playbook -i inventories/docker/hosts.ini playbooks/10_docker_install.yml
 ## AWS VPC + EC2 만들기
 ### 리눅스에서 aws 실행 여부 확인
 ```
+sudo apt update
+sudo apt install -y awscli
+aws --version
+```
+---
+```
 kimdy@DESKTOP-CLQV18N:~/ansible-aws-docker-ops-enterprise$ aws
 
 aws: [ERROR]: the following arguments are required: command
